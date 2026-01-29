@@ -10,7 +10,9 @@ export function isSupabaseConfigured(): boolean {
 
 export async function createClient() {
   if (!isSupabaseConfigured()) {
-    return null
+    // Return a mock client that doesn't make real requests
+    // This allows the app to run without Supabase configured
+    return createMockClient()
   }
   
   const cookieStore = await cookies()
@@ -37,4 +39,34 @@ export async function createClient() {
       },
     }
   )
+}
+
+// Mock client for when Supabase is not configured
+function createMockClient() {
+  const mockResponse = { data: null, error: { message: 'Supabase not configured' } }
+  
+  const mockQuery = () => ({
+    select: () => mockQuery(),
+    insert: () => mockQuery(),
+    update: () => mockQuery(),
+    delete: () => mockQuery(),
+    eq: () => mockQuery(),
+    neq: () => mockQuery(),
+    in: () => mockQuery(),
+    gte: () => mockQuery(),
+    lte: () => mockQuery(),
+    like: () => mockQuery(),
+    order: () => mockQuery(),
+    limit: () => mockQuery(),
+    single: () => Promise.resolve(mockResponse),
+    then: (resolve: (value: typeof mockResponse) => void) => Promise.resolve(mockResponse).then(resolve),
+  })
+
+  return {
+    from: () => mockQuery(),
+    auth: {
+      getUser: () => Promise.resolve({ data: { user: null }, error: null }),
+      signOut: () => Promise.resolve({ error: null }),
+    },
+  } as ReturnType<typeof createServerClient>
 }

@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 롯데칠성 CRM MVP
 
-## Getting Started
+음료 유통 전문 CRM 시스템 - 거래처, 주문, 제품, 영업사원 관리
 
-First, run the development server:
+## 🚀 Live Demo
+
+**https://web-three-nu-39.vercel.app**
+
+현재 데모 모드로 동작하며, 샘플 데이터가 표시됩니다.
+
+## ✨ 주요 기능
+
+### 1. 거래처 관리 (Accounts)
+- 도매상, 소매점, 대형유통 구분
+- 거래처 등급 시스템 (브론즈/실버/골드/플래티넘)
+- 신용 한도 관리
+- 영업사원 배정
+
+### 2. 제품 관리 (Products)
+- 제품 카탈로그 CRUD
+- 카테고리별 분류 (탄산음료, 주스, 커피, 차, 스포츠음료, 생수, 주류)
+- 최소 주문 수량 설정
+- 판매 상태 관리
+
+### 3. 주문 관리 (Orders)
+- 주문 생성 (다중 품목)
+- 배송 일정 관리
+- 주문 상태 추적 (대기중 → 확정 → 배송중 → 배송완료)
+- 할인 적용
+
+### 4. 영업사원 관리 (Sales Reps)
+- 담당 구역 배정
+- 거래처 배정
+- 실적 트래킹
+
+### 5. 대시보드
+- 매출 현황
+- 주문 현황
+- 거래처별 실적
+- 영업사원 실적
+
+## 🛠️ 기술 스택
+
+- **Frontend**: Next.js 15, TypeScript, Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Database**: Supabase (PostgreSQL)
+- **Deployment**: Vercel
+
+## 📦 로컬 개발
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# 의존성 설치
+pnpm install
+
+# 개발 서버 시작
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔧 Supabase 연결하기
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Supabase 프로젝트 생성
+1. [supabase.com](https://supabase.com)에서 새 프로젝트 생성
+2. Project URL과 anon key 복사
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. 데이터베이스 스키마 설정
+Supabase SQL Editor에서 `supabase/schema.sql` 내용 실행
 
-## Learn More
+### 3. 환경변수 설정
 
-To learn more about Next.js, take a look at the following resources:
+로컬 개발:
+```bash
+# .env.local
+NEXT_PUBLIC_SUPABASE_URL=your-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Vercel 배포:
+1. Vercel 프로젝트 Settings → Environment Variables
+2. 위 환경변수 추가
+3. 재배포
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📁 프로젝트 구조
 
-## Deploy on Vercel
+```
+src/
+├── app/
+│   ├── (dashboard)/     # 메인 대시보드 레이아웃
+│   │   ├── page.tsx     # 대시보드 홈
+│   │   ├── customers/   # 거래처 관리
+│   │   ├── products/    # 제품 관리
+│   │   ├── orders/      # 주문 관리
+│   │   └── sales-reps/  # 영업사원 관리
+│   └── login/           # 로그인 페이지
+├── components/
+│   ├── ui/              # shadcn/ui 컴포넌트
+│   ├── accounts/        # 거래처 관련 컴포넌트
+│   ├── products/        # 제품 관련 컴포넌트
+│   ├── orders/          # 주문 관련 컴포넌트
+│   └── sales-reps/      # 영업사원 관련 컴포넌트
+├── lib/
+│   ├── actions/         # Server Actions
+│   ├── supabase/        # Supabase 클라이언트
+│   ├── database.types.ts # TypeScript 타입
+│   └── demo-data.ts     # 데모 데이터
+└── supabase/
+    └── schema.sql       # 데이터베이스 스키마
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📄 License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
